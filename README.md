@@ -28,7 +28,7 @@ O projeto beneficia moradores de áreas de risco, associações de bairro e equi
 
 ## O que já foi adicionado
 
-Estado atual: esqueleto do domínio e das exceções
+Estado atual: domínio, exceções e persistência com JDBC
 
 | Item | Status |
 |---|---|
@@ -42,7 +42,9 @@ Estado atual: esqueleto do domínio e das exceções
 | `DadosInvalidosException` e `FonteIndisponivelException` | Feito |
 | `EstrategiaPrevisao` (apenas a assinatura abstrata) | Esqueleto |
 | Testes: `MedicaoTest`, `DadosTerritorioTest`, `PontoVulneravelTest` | Feito |
-| Persistência com JDBC (`MedicaoDAO`, `AlertaDAO`, `schema.sql`) | A fazer |
+| `ConexaoBanco` (H2) e `schema.sql` | Feito |
+| `MedicaoDAO` e `AlertaDAO` com `PreparedStatement` e try-with-resources | Feito |
+| Testes dos DAOs: `MedicaoDAOTest`, `AlertaDAOTest` | Feito |
 | `PrevisaoMediaMovel`, `PrevisaoComparacao` | A fazer |
 | Padrão criacional (Factory, Singleton ou Builder) | A fazer |
 | `ServicoMonitoramento` e geração de alertas | A fazer |
@@ -62,9 +64,11 @@ GS2 - POO/
     │   │                  DadosTerritorio, Medicao, Alerta, NivelAlerta, StatusComponente,
     │   │                  EstrategiaPrevisao
     │   ├── excecao/       DadosInvalidosException, FonteIndisponivelException
-    │   ├── persistencia/  (DAOs com JDBC)
+    │   ├── persistencia/  ConexaoBanco, MedicaoDAO, AlertaDAO
     │   └── servico/       (serviço, fábrica e configuração)
-    └── test/java/         MedicaoTest, DadosTerritorioTest, PontoVulneravelTest
+    ├── main/resources/    schema.sql
+    └── test/java/         MedicaoTest, DadosTerritorioTest, PontoVulneravelTest,
+                           MedicaoDAOTest, AlertaDAOTest, BancoDeTeste
 ```
 
 ## Como rodar
@@ -72,6 +76,14 @@ GS2 - POO/
 ```
 mvn clean test
 ```
+
+## Banco de dados
+
+- Banco **H2 em arquivo**, criado automaticamente em `./dados/gs2poo` na primeira execução. Por ser arquivo (e não memória), o histórico sobrevive ao reiniciar o programa.
+- As tabelas `medicao` e `alerta` são criadas pelo `src/main/resources/schema.sql` (`ConexaoBanco.inicializarSchema()`), que pode rodar a cada inicialização sem apagar dados.
+- Para zerar o histórico, apague a pasta `dados/`.
+- Todo SQL usa `PreparedStatement`; falhas de banco viram `FonteIndisponivelException` com mensagem clara.
+- Os testes dos DAOs usam H2 em memória, sem tocar no arquivo real.
 
 ## Decisões da equipe
 
@@ -86,10 +98,10 @@ mvn clean test
 
 | Integrante | Responsabilidade |
 |---|---|
-| Caio Castelão Carminato | |
+| Caio Castelão Carminato | **Previsões, Serviço e Menu Principal** |
 | Guilherme Vasques Tamai | **domínio e exceções** |
-| Vitor Komura de Freitas | |
+| Vitor Komura de Freitas | **Persistência JDBC, DAOs e Testes de Banco** |
 
 ## Uso de IA
 
-Para essa primeira parte do projeto focada no domínio e nas exceções, utilizamos a IA (Claude) como um apoio inicial para montar o esqueleto das classes e a configuração base do pom.xml. O restante do desenvolvimento dessa etapa, incluindo a lógica de validação, ajuste de IDs e a criação dos testes, foi feito 100% pela equipe para garantir que tudo atenda aos requisitos da GS.
+Para essa primeira parte do projeto focada no domínio e nas exceções, utilizamos a IA (Claude) como um apoio inicial para montar o esqueleto das classes e a configuração base do pom.xml. O restante do desenvolvimento dessa etapa, incluindo a lógica de validação, ajuste de IDs e a criação dos testes, foi feito 100% pela equipe para garantir que tudo atenda aos requisitos da GS. Na segunda etapa (Persistência), a IA foi utilizada para gerar o rascunho do schema.sql e a estrutura base da classe de conexão com o banco H2. Em seguida, a equipe assumiu a implementação dos métodos nos DAOs (MedicaoDAO e AlertaDAO), revisando linha por linha para aplicar blocos try-with-resources, garantir o uso de PreparedStatement (evitando injeção de SQL) e mapear corretamente as exceções para atender aos requisitos da avaliação.

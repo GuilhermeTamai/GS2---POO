@@ -5,3 +5,4 @@ target/
 .vscode/
 *.mv.db
 *.trace.db
+dados/
