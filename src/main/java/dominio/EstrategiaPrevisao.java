@@ -1,8 +1,13 @@
 package dominio;
 
+import excecao.DadosInvalidosException;
+
 import java.util.List;
 
-/** Esqueleto combinado: a Pessoa C implementa as filhas e a lógica. */
+/**
+ * Contrato das estratégias de previsão. Cada filha implementa prever() do seu jeito
+ * (polimorfismo) e o serviço usa qualquer uma sem saber qual é.
+ */
 public abstract class EstrategiaPrevisao {
 
     private final String nome;
@@ -15,6 +20,15 @@ public abstract class EstrategiaPrevisao {
         return nome;
     }
 
-    /** Recebe o histórico (vindo do banco) e devolve o valor previsto. */
-    public abstract double prever(List<Medicao> historico);
+    /** Recebe o histórico (vindo do banco, em ordem cronológica) e devolve o valor previsto. */
+    public abstract double prever(List<Medicao> historico) throws DadosInvalidosException;
+
+    /** Média simples dos valores. Quem chama garante que a lista não está vazia. */
+    protected double calcularMedia(List<Medicao> medicoes) {
+        double soma = 0;
+        for (Medicao medicao : medicoes) {
+            soma += medicao.getValor();
+        }
+        return soma / medicoes.size();
+    }
 }
