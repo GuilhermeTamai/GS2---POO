@@ -13,7 +13,7 @@ Tema: **CitizenTech** | Recorte escolhido: **Clima local - chuva intensa e risco
 
 ## Ideia principal do projeto
 
-O sistema monitora pontos urbanos vulneráveis a alagamentos, coletando dados em tempo real de sensores simulados de pluviometria, nível de córregos e umidade do solo. A partir do histórico persistido em banco de dados, o sistema aplica estratégias de previsão (como média móvel das medições) para antecipar o risco de transbordamento. Com base nessas previsões e nos limiares de segurança definidos, a aplicação emite alertas graduais (Atenção, Alerta ou Crítico) para prever enchentes antes que ocorram.
+O sistema monitora pontos urbanos vulneráveis a alagamentos, coletando dados de sensores simulados de pluviometria, nível de córregos e umidade do solo. A partir do histórico persistido em banco de dados, o sistema aplica estratégias de previsão (como média móvel das medições) para antecipar o risco de transbordamento. Com base nessas previsões e nos limiares de segurança definidos, a aplicação emite alertas graduais (Atenção, Alerta ou Crítico) para prever enchentes antes que ocorram.
 
 ### Público beneficiado e decisão apoiada
 
