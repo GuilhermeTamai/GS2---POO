@@ -54,7 +54,7 @@ Estado atual: sistema completo (domínio, exceções, persistência, previsões,
 ## Estrutura do projeto
 
 ```
-GS2 - POO/
+GS2---POO/
 ├── pom.xml
 ├── README.md
 └── src/
@@ -84,6 +84,8 @@ Requisitos: Java 17 e Maven.
 mvn clean test          # roda todos os testes
 mvn compile exec:java   # abre o menu no console
 ```
+
+Alternativa: importar a pasta como projeto Maven na IDE (Eclipse, IntelliJ ou VS Code), rodar os testes pelo Maven e executar a classe `SistemaMonitoramento` para abrir o menu.
 
 Na primeira execução o banco é criado sozinho em `./dados/gs2poo`. Sugestão para ver o sistema funcionando: use a opção 1 (verificar sensores) pelo menos 5 vezes, depois a opção 2 (rodar previsões) e a opção 3 (ver histórico). A opção 4 permite baixar os limiares para forçar um alerta e simular a falha de um sensor.
 
